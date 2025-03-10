@@ -1,0 +1,71 @@
+---
+title: "Untitled"
+format: revealjs
+---
+# Transition slide
+
+## Section header
+
+content here
+```{r}
+#| label: setup 
+
+library("tidyverse")
+library("ds4ling")
+library("untidydata")
+library("plot3D")
+```
+
+## Look at data
+
+```{r}
+#| label: try-glimpse
+#| echo: true
+
+head(language_diversity)
+ld <- language_diversity |> 
+  filter(Continent == "Africa") |> 
+  pivot_wider(names_from = "Measurement", values_from = "Value")
+
+```
+
+
+## A plot
+```{r}
+#| label: fig-plot
+#| fig-dpi: 300 #adjust quality of image
+#| fig-asp: 0.56
+#| out-width: "100%"
+
+ld |> 
+  ggplot() +
+  aes(x = Population, y  = Langs) +
+  geom_text(aes(color = Area, label = Country)) +
+  geom_smooth(method = lm, formula = "y ~ x")
+```
+
+---
+
+## A model
+
+```{r}
+#| label: mrc
+my_mod <- lm(Langs ~ Area + Population, data = ld)
+summary(my_mod)
+```
+
+## Pretty summary
+```{r}
+#| label: tbl-mod #will make a table
+#| tbl-cap: hello! 
+
+summary(my_mod)$coef |>
+  knitr::kable()
+```
+
+
+# Transition 2
+
+
+## More stuff
+
